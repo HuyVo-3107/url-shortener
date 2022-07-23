@@ -1,0 +1,29 @@
+version: "3.9"
+services:
+  postgres:
+    image: postgres
+    container_name: postgres
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-123asd!@#}
+      PGDATA: /var/lib/postgresql/data/pgdata
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/pgdata
+    expose:
+      - '5432'
+    ports:
+      - '5432:5432'
+    networks:
+      - local
+    restart: unless-stopped
+
+networks:
+  local:
+    driver: bridge
+    name: local
+    ipam:
+      driver: default
+
+volumes:
+  postgres_data:
+    name: postgres_data
