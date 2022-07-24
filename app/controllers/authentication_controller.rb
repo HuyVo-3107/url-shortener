@@ -62,7 +62,6 @@ class AuthenticationController < ApplicationController
     else
       raise CustomError.new(401, "Request invalid. Refresh_token is null", 401)
     end
-p token
     decoded = Auth.decode(token, ENV['JWT_REFRESH_TOKEN_PRIVATE_KEY'])
     user = User.find(decoded[:user_id])
 
@@ -114,7 +113,7 @@ p token
 
       # generate refresh token
       refresh_token_expire = 1.days.from_now.freeze
-      refresh_token = Auth.encode(payload, ENV['JWT_REFRESH_TOKEN_PRIVATE_KEY'], {exp: time_refresh_token.to_i})
+      refresh_token = Auth.encode(payload, ENV['JWT_REFRESH_TOKEN_PRIVATE_KEY'], {exp: refresh_token_expire.to_i})
 
       render json: {
           data: {

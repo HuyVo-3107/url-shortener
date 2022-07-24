@@ -9,5 +9,10 @@ Rails.application.routes.draw do
 
   namespace :api do
     get '/', to: "api#index"
+    resources :links, except: %i[new edit], param: :short_url do
+      member do
+        get '/get_url', to: 'links#get_url'
+      end
+    end
   end
 end
