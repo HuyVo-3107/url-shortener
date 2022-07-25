@@ -16,4 +16,7 @@ class User < ApplicationRecord
 
   has_many :links, dependent: :destroy
 
+  def change_password password, confirmation
+    self.update!(password: password, password_confirmation: confirmation)
+  end
 end

@@ -33,4 +33,19 @@ class Api::UserController < Api::ApiController
     }
   end
 
+  def change_pw
+    if @current_user.authenticate(params[:password])
+      @current_user.change_password(params[:new_password], params[:new_password_confirmation])
+      render json: {
+          data: { message: "Password changes success"},
+          status: 200
+      }, status: :ok
+    else
+      render json: {
+          errors: {code: 4008, message: "Current password is not correct"},
+          status: 400
+      }, status: 200
+    end
+  end
+
 end

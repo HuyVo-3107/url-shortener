@@ -19,6 +19,7 @@ Rails.application.routes.draw do
       put '/', to: "user#update"
       get '/user_info', to: "user#user_info"
       post '/generate_api_token', to: "user#generate_api_token"
+      post '/change_pw', to: "user#change_pw"
     end
   end
 end
