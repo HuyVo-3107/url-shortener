@@ -99,33 +99,35 @@ class AuthenticationController < ApplicationController
   #
   def register
     ApplicationRecord.transaction do
-      strong_params = params.require(:user).permit(:email, :name, :password, :password_confirmation)
-      user = User.create!(strong_params)
+      strong_params = params.permit(:email, :name, :password, :password_confirmation)
+      ApplicationRecord.transaction do
+        user = User.create!(strong_params)
 
-      access_token_expire = 1.hours.from_now
+        access_token_expire = 1.hours.from_now
 
-      payload = {
-          user_id: user.id,
-          email: user.email,
-          expire: (1.hours.from_now + 10.seconds).to_i
-      }
+        payload = {
+            user_id: user.id,
+            email: user.email,
+            expire: (1.hours.from_now + 10.seconds).to_i
+        }
 
-      # generate access token
-      access_token = Auth.encode(payload, ENV['JWT_ACCESS_TOKEN_PRIVATE_KEY'], {exp: (access_token_expire + 10.seconds).to_i})
+        # generate access token
+        access_token = Auth.encode(payload, ENV['JWT_ACCESS_TOKEN_PRIVATE_KEY'], {exp: (access_token_expire + 10.seconds).to_i})
 
-      # generate refresh token
-      refresh_token_expire = 1.days.from_now.freeze
-      refresh_token = Auth.encode(payload, ENV['JWT_REFRESH_TOKEN_PRIVATE_KEY'], {exp: refresh_token_expire.to_i})
+        # generate refresh token
+        refresh_token_expire = 1.days.from_now.freeze
+        refresh_token = Auth.encode(payload, ENV['JWT_REFRESH_TOKEN_PRIVATE_KEY'], {exp: refresh_token_expire.to_i})
 
-      render json: {
-          data: {
-              access_token: access_token,
-              access_exp: access_token_expire.to_i,
-              refresh_token: refresh_token,
-              refresh_exp: refresh_token_expire.to_i
-          },
-          status: 200
-      }, status: :created
+        render json: {
+            data: {
+                access_token: access_token,
+                access_exp: access_token_expire.to_i,
+                refresh_token: refresh_token,
+                refresh_exp: refresh_token_expire.to_i
+            },
+            status: 200
+        }, status: :created
+      end
     end
   end
 
