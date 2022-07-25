@@ -46,10 +46,11 @@ class AuthenticationController < ApplicationController
                 refresh_exp: refresh_token_expire.to_i
             },
             status: 200
-        }, status: :created
+        }, status: :created and return
+      else
+        raise CustomError.new(404, "Login failed! Password incorrect", 200)
       end
     end
-
   end
 
 

@@ -1,24 +1,27 @@
-# README
+# Shortener URL 
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
-
-Things you may want to cover:
-
-* Ruby version
-
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+### Prerequisites
+* [Install Docker](https://docs.docker.com/engine/install/ubuntu/)
+   
+### Installation
+1. Download [Code Backend](https://github.com/HuyVo-3107/url-shortener)
+    * Run docker command
+     ```sh
+        cd url-shortener
+        docker build -t shortener_url_api:latest .
+     ``` 
+    * Host: http://localhost:3000
+2. Download [Code Frontend](https://github.com/HuyVo-3107/shortener-url-frontend)
+    * Run docker command 
+     ```sh
+        cd shortener-url-frontend
+        docker build -t shortener_url_frontend:latest .
+     ``` 
+      * Host: http://localhost
+3. Run docker-compose.yml
+    * Run docker command
+     ```sh
+        cd shortener-url-frontend
+        docker-compose up -d
+     ``` 
+4.  [Login](http://localhost/auth/login) or [Register](http://localhost/auth/register)
