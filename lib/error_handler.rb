@@ -42,9 +42,9 @@ module ErrorHandler
   def self.included(clazz)
     clazz.class_eval do
 
-      # rescue_from StandardError do |exception|
-      #   responds(402, exception.as_json, 400)
-      # end
+      rescue_from StandardError do |exception|
+        responds(402, exception.as_json, 400)
+      end
 
       rescue_from CustomError do |exception|
         responds exception.code, exception.options, exception.status
