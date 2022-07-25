@@ -14,5 +14,11 @@ Rails.application.routes.draw do
         get '/get_url', to: 'links#get_url'
       end
     end
+
+    scope :user do
+      put '/', to: "user#update"
+      get '/user_info', to: "user#user_info"
+      post '/generate_api_token', to: "user#generate_api_token"
+    end
   end
 end

@@ -1,3 +1,4 @@
+require 'rest-client'
 module ApplicationHelper
   def short_url_to_id url
     id = 0
@@ -21,5 +22,21 @@ module ApplicationHelper
       id = (id / 62).floor
     end
     short_url.reverse
+  end
+
+  def get_title_website url
+    begin
+    result = RestClient.get(url).body
+      match_title = result.to_s.match(/<title>(.*)<\/title>/)
+
+      if match_title.present?
+        return match_title[1]
+      else
+        return ""
+      end
+    rescue StandardError => e
+      puts e
+      return ""
+    end
   end
 end

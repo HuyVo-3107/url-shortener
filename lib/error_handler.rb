@@ -31,7 +31,7 @@ module ErrorHandler
           errors: [
               {
                   resource: "pagination",
-                  message: "page=" + @value + " don't exist",
+                  message: "page=" + @value.to_s + " don't exist",
                   code: 400
               }
           ]
@@ -69,7 +69,6 @@ module ErrorHandler
   private
 
   def render_pagy_error error
-    ElasticAPM.report(error)
     render json: PagyVariableError.new(error).to_hash, status: 200 and nil
   end
 

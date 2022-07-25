@@ -3,12 +3,21 @@ class Api::ApiController < ApplicationController
   before_action :authorize_request
 
   def authorize_request
-    header = request.headers['Authorization']
-    header = header.split(' ').last if header
-    decoded = Auth.decode(header, ENV['JWT_ACCESS_TOKEN_PRIVATE_KEY'])
-    p decoded
-    @current_user = User.find(decoded[:user_id])
-
+    header_auth = request.headers['Authorization']
+    if header_auth.present?
+      header_auth = header_auth.split(' ')
+      if header_auth[0] == "Bearer"
+        decoded = Auth.decode(header_auth[1], ENV['JWT_ACCESS_TOKEN_PRIVATE_KEY'])
+        p decoded
+        @current_user = User.find(decoded[:user_id])
+      elsif header_auth[0] == "PrivateToken"
+        @current_user = User.find_by!(api_token_private: header_auth[1])
+      else
+        raise CustomError.new(401, "Authorization failed", 401)
+      end
+    else
+      raise CustomError.new(401, "Authorization failed", 401)
+    end
   end
 
   def index

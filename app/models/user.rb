@@ -3,6 +3,7 @@ class User < ApplicationRecord
   attribute :password_confirmation
 
   has_secure_password
+  has_secure_token :api_token_private
 
   validates :password_confirmation, presence: true, on: :create
   validates :password, confirmation: true, presence: true, length: {minimum: 6}, on: :create

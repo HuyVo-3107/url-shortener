@@ -1,7 +1,9 @@
 class AuthenticationController < ApplicationController
   def login
     ApplicationRecord.transaction do
-      user = User.find_by!(email: params[:email])
+      user = User.find_by(email: params[:email])
+      p user
+      raise CustomError.new(404, "User email is not exits", 200) unless user.present?
       # Equal password
       if user.authenticate(params[:password])
         payload = {
